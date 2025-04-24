@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import ContactForm from './components/ContactForm';
+import ContactList from './pages/ContactList';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       </header>
       <main>
         <ContactForm />
+        <ContactList />
       </main>
     </div>
   );
