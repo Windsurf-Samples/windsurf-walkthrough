@@ -14,8 +14,17 @@ def submit_contact():
     contact = {
         'name': data.get('name'),
         'email': data.get('email'),
-        'message': data.get('message')
+        'message': data.get('message'),
+        'phone': data.get('phone')
     }
+    if not data.get('name'):
+        return jsonify({'status': 'error', 'message': 'Name is required'}), 400
+    if not data.get('message'):
+        return jsonify({'status': 'error', 'message': 'Message is required'}), 400
+    if not data.get('email'):
+        return jsonify({'status': 'error', 'message': 'Email is required'}), 400
+    
+
     contacts.append(contact)
     return jsonify({'status': 'success'}), 201
 
