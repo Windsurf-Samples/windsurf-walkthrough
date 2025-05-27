@@ -40,12 +40,14 @@ interface ContactFormData {
   name: string;
   email: string;
   message: string;
+  phone: string;
 }
 
 interface FormErrors {
   name?: string;
   email?: string;
   message?: string;
+  phone?: string;
 }
 
 const ContactForm: React.FC = () => {
@@ -53,6 +55,7 @@ const ContactForm: React.FC = () => {
     name: '',
     email: '',
     message: '',
+    phone: '',
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -90,7 +93,8 @@ const ContactForm: React.FC = () => {
     const sanitizedData = {
       name: sanitizeInputString(formData.name),
       email: formData.email.trim(),
-      message: formData.message.trim()
+      message: formData.message.trim(),
+      phone: formData.phone.trim()
     };
     
     try {
@@ -103,7 +107,7 @@ const ContactForm: React.FC = () => {
       });
       
       if (response.ok) {
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', message: '', phone: '' });
         setErrors({});
       }
     } catch (error) {

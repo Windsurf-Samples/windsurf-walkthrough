@@ -2,6 +2,7 @@
 Windsurf Tab is a powerful AI-assisted coding feature that helps you write code faster and more efficiently. This demo will showcase its capabilities using a Contact Form application as an example.
 
 ## Setup
+1. Ensure you are at the git HEAD with `git reset HEAD --hard`
 1. Open these files in your editor:
    - `contact-form-app/frontend/src/components/ContactForm.tsx`
    - `contact-form-app/backend/app.py`
@@ -26,29 +27,30 @@ const [success
 // Windsurf will suggest: const [successMessage, setSuccessMessage] = useState('');
 ```
 
+
 ## Supercomplete
 Supercomplete suggests multi-line completions and code blocks, even outside your cursor location.
 
 ### Example: New form field
 In `ContactForm.tsx`, :
 ```typescript
-// Start typing in the ContactFormData interface
+// Start typing a new `phone` field in the ContactFormData interface
 interface ContactFormData {
   ...
   phone: string;
 }
 ```
-windsurf Tab will now either help you jump to the contact form formData initial state to add a phone field or suggest a supercomplete block to add a phone field.
+Windsurf Tab will now either help you jump to the contact form formData initial state to add a phone field or suggest a supercomplete block to add a phone field.
 
 ## Tab to Jump
 Tab to Jump anticipates where you might want to move your cursor next and lets you jump there with a single Tab press.
 
-After adding the phone field from the Supercomplete block, you may see Tab to Jump invoke automatically to move your cursor
+After adding the phone field from the Supercomplete block from above, you may see Tab to Jump invoke automatically to move your cursor to the next logical location
 
 ## Tab to Import
 Tab to Import automatically suggests and adds missing imports when you use new dependencies.
 
-### Example: Adding Validation
+### Example: Adding Validation via YUP package
 In `ContactForm.tsx`, start using a validation library:
 ```typescript
 // Start typing:
@@ -59,7 +61,7 @@ const schema = yup.object().shape({
   phone: yup.string().required(),
 });
 ```
-tab to import will add the import statement
+tab to import will add the import statement for `yup`
 
 ## Keyboard Shortcuts
 - **Accept suggestion**: `Tab`
