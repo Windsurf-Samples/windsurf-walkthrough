@@ -14,8 +14,7 @@ def submit_contact():
     contact = {
         'name': data.get('name'),
         'email': data.get('email'),
-        'message': data.get('message'),
-        'phone': data.get('phone')
+        'message': data.get('message')
     }
     if not data.get('name'):
         return jsonify({'status': 'error', 'message': 'Name is required'}), 400
