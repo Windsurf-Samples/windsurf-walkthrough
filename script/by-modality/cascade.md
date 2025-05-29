@@ -217,7 +217,7 @@ Rules can be activated in four different ways:
 
 This codebase has a preconfigured rule for regex documentation. To see it in action:
 
-1. Open `.windsurf/rules/regex-guide.md` to view the rule definition
+1. Open `.windsurf/rules/documentation-guide.md` to view the rule definition
 2. Ask Cascade to create a regex pattern
 
 The rule ensures all regex patterns include:
