@@ -31,7 +31,7 @@ Click the `Explain` option at the top of the breadcrumbs in the editor
 - Note how Cascade uses multiple tool invocations to reason and then make edits across mutliple files
 
 ### Explaining errors
-Naviate to `contact-form-app/frontend/tsconfig.json` and edit the first line to the following:
+Navigate to `contact-form-app/frontend/tsconfig.json` and edit the first line to the following:
 
 
 ## Flow-awareness and Context-awarness

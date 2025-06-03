@@ -12,12 +12,12 @@ This repository serves as an interactive tutorial for working with Windsurf's co
 ./
 ├── contact-form-app/     # Example codebase (React + Python)
 └── script/              # Windsurf interaction tutorials
-    └── by-modality/    # Feature-specific walkthroughs
+    └── by-[x]/    # Alternative use-case-specific walkthroughs
 ```
 
 ## Getting Started
 
-The walkthroughs in `script/by-modality/` will guide you through various Windsurf features and demonstrate how to:
+The walkthroughs in `script/` will guide you through various Windsurf features and demonstrate how to:
 - Collaborate effectively with an AI coding assistant
 - Navigate and understand existing codebases
 - Make targeted code improvements
@@ -25,6 +25,6 @@ The walkthroughs in `script/by-modality/` will guide you through various Windsur
 
 ## Walkthrough Instructions
 
-Follow the guides in `script/by-modality/` to explore different ways of working with Windsurf. Each walkthrough is designed to showcase specific features and interaction patterns.
+Follow the guides in `script/[modality].md` to explore different ways of working with Windsurf. Each walkthrough is designed to showcase specific features and interaction patterns.
 
 Note: Due to the probabilistic nature of AI interactions, your specific experience may vary while maintaining the core learning objectives.
