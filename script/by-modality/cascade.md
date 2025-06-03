@@ -295,15 +295,6 @@ When you invoke this workflow with `/fe-build-debug-stagecommit`, Cascade will:
 3. Help stage the changes
 4. Suggest an appropriate commit message based on the changes
 
-#### Workflow Automation
-
-You can add special annotations to your workflows to control how Cascade executes certain steps:
-
-- `// turbo` - Placed above a specific step to auto-run just that command
-- `// turbo-all` - Added anywhere in the workflow to auto-run all commands
-
-These annotations are particularly useful for routine tasks that don't require manual confirmation.
-
 #### Best Practices
 
 * Keep workflows focused on specific, repeatable tasks
