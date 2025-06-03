@@ -1,16 +1,28 @@
 # Windsurf Cascade Demo
-Windsurf Cascade is a Collaborative, Agentic AI-assistant and is the natural evolution of a Chat Assistant. Cascade has access to research your code base, invoke tools to edit your code and run terminal commands, and
+Windsurf Cascade is a Collaborative, Agentic AI-assistant and is the natural evolution of a Chat Assistant. Cascade has access to research your code base, invoke tools to edit your code and run terminal commands, and understand your recent actions (your current trajectory) to derive your next intent.
 
 **Note** Cascade is highly flexible as an Agentic System. This demo will walk through some of Cascade's core capabilities, but will be nonexhaustive
 
+## Setup
+1. Ensure you are at the git HEAD with `git reset HEAD --hard`
+
 ## Working with Code
 Cascade is a great assistant for communicating with an AI Assistant about your code base 
-### Explaining Code via CodeLens
+### Explaining Code (via CodeLens)
 Open `contact-form-app/backend/app.py` and place your cursor at the end of the line 
 ```python
 def submit_contact():
 ```
 Click the `Explain` option at the top of the breadcrumbs in the editor
+
+### Explain Problems (via Intellisense)
+Open `contact-form-app/frontend/tsconfig.json` and edit the line to the below:
+```json
+    "target": "es15",
+```
+
+Because es15 is not a valid target, Intellisense can provide a popup for Cascade to explain and fix the problem. The shortcut is `Command + Shift + .`
+
 
 ### Selecting Lines of Code from Editor
 - Open `contact-form-app/backend/app.py` and highlight the below code snippets
@@ -29,10 +41,6 @@ Click the `Explain` option at the top of the breadcrumbs in the editor
 - Open `contact-form-app/backend/app.py`
 - Ask Cascade: `Analyze this file. I want my backend form to accept a phone field. First determine where in my code base I am dependent on this code, then make a plan for updating all the relevant code files to begin accepting a new phone field.
 - Note how Cascade uses multiple tool invocations to reason and then make edits across mutliple files
-
-### Explaining errors
-Naviate to `contact-form-app/frontend/tsconfig.json` and edit the first line to the following:
-
 
 ## Flow-awareness and Context-awarness
 ### Continue the flow
@@ -265,7 +273,7 @@ Each workflow consists of:
 
 To execute a workflow, simply type `/[workflow-name]` in Cascade. For example:
 ```
-/fe-build-debug-stagecommit
+/fe-build-debug-stage
 ```
 
 Cascade will then guide you through each step of the workflow sequentially.
