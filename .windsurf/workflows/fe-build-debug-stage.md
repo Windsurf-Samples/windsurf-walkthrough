@@ -5,7 +5,7 @@ description: This is a common workflow for immediately preceding a git commit. I
 The changes currently active must correctly build in the frontend directory before committing into the code base.
 
 Follow these steps:
-1. run `npm run build`
+1. run `npm run build` from the `/contact-form-app/frontend` directory
 2. See if the build succeeds
  - If the build fails, research why the build failed and begin to suggest fixes. Reason over the easiest path to remediation. Cease the workflow here
  - If the build succeeds, determine the contents of the changes that are not yet committed
