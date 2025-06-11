@@ -8,11 +8,18 @@ Windsurf Cascade is a Collaborative, Agentic AI-assistant and is the natural evo
 
 1. Ensure you are at the git HEAD with `git reset HEAD --hard`
 
-## MCP
+## Cascade's Tools
+
+### Terminal Integration
+
+- Close all files and ensure you are starting from the git branch's HEAD `git reset HEAD --hard`. Ensure you are in a new Cascade Chat window with no conversation history
+- Ask Cascade `Run all python tests in my backend`
+- Note how there is a failing python test. Work with Cascade to research what is causing the failing test.
+  - You choose - is the test wrong, or is the implementation?
+
+### MCP + Figma Example
 
 MCP is an open protocol that makes it easier for AI agents — like Cascade — to connect to tools, data, and context in a standardized way.
-
-### Figma MCP Example
 
 - Navigate to Windsurf's Plugins icon in the top right (blocks icon)
 - Click on the 'Manage plugins' button
@@ -40,7 +47,7 @@ MCP is an open protocol that makes it easier for AI agents — like Cascade — 
 - Paste the image into Cascade and ask Cascade to `Implement this design. You shouldn’t need your Figma MCP tools anymore. Use the assets we’ve downloaded previously as necessary.`
 
 
-## Windsurf Browser
+### Windsurf Browser
 - Ask Cascade to `Run my app`
 - Select 'Windsurf Browser' when prompted to open the website preview
 - Click the 'Select element' in the bottom right of the Windsurf Browser and select the header

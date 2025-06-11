@@ -12,6 +12,12 @@ Windsurf Cascade is a Collaborative, Agentic AI-assistant and is the natural evo
 
 Cascade is a great assistant for communicating with an AI Assistant about your code base
 
+### Planning Mode
+
+- Close all files and ensure you are starting from the git branch's HEAD `git reset HEAD --hard`. Ensure you are in a new Cascade Chat window with no conversation history
+- Enable Planning Mode (checkbox icon in the bottom left beneath the chat input box)
+- Ask Cascade `I want to add a phone number field to the contact form. Help me understand the structure and contents of this code and scope out the next steps based on what you discover.`
+
 ### Explaining Code (via CodeLens)
 
 Open `contact-form-app/frontend/src/components/ContactForm.tsx` and place your cursor at the end of the line
@@ -53,18 +59,7 @@ Because es15 is not a valid target, Intellisense can provide a popup for Cascade
 - Add a user prompt to the end of this mentioned context such as `Explain and create inline comments`
 - Review the chat reponse and edited code suggestions
 
-
-### Planning Mode
-
-- Close all files and ensure you are starting from the git branch's HEAD `git reset HEAD --hard`. Ensure you are in a new Cascade Chat window with no conversation history
-- Enable Planning Mode (checkbox icon in the bottom left beneath the chat input box)
-- Ask Cascade `I want to add a phone number field to the contact form. Help me understand the structure and contents of this code and scope out the next steps based on what you discover.`
-
-### Multi-file Edits
-
-- Review the chat response and the planning document. Then, ask Cascade to `Continue with the next step`
-
-## Flow/Context Awareness + Multi-file Edits
+## Flow/Context Awareness
 
 ### Continue the flow
 
@@ -136,12 +131,3 @@ Environment Guidelines
 - Switch the Activation Mode to `Always On`
 - Save the file
 
-
-## Cascade's Tools
-
-### Terminal Integration
-
-- Close all files and ensure you are starting from the git branch's HEAD `git reset HEAD --hard`. Ensure you are in a new Cascade Chat window with no conversation history
-- Ask Cascade `Run all python tests in my backend`
-- Note how there is a failing python test. Work with Cascade to research what is causing the failing test.
-  - You choose - is the test wrong, or is the implementation?
