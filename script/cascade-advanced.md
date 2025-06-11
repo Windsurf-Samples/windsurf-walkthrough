@@ -42,7 +42,7 @@ MCP is an open protocol that makes it easier for AI agents — like Cascade — 
 - Copy the link to the Figma group called 'Icons'
 - Ask Cascade to `Download the icons from this Figma group: <LINK_TO_FIGMA_GROUP>`
 
-## Multimodal Capability
+### Multimodal Capability
 - Select the 'Home Page' in the Figma file and copy it as a PNG
 - Paste the image into Cascade and ask Cascade to `Implement this design. You shouldn’t need your Figma MCP tools anymore. Use the assets we’ve downloaded previously as necessary.`
 

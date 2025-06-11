@@ -88,46 +88,124 @@ to
 
 - Type in Cascade: `Continue by updating all call sites`
 
-## Rules/Memories + Workflows
+## Rules + Workflows
 
 ### Rules
 
-- Open Cascade and navigate to the Customizations icon in the top right (open book icon)
-- Navigate to the Rules panel
-- Click `+ Workspace` to create a new ruleset
-- Name the ruleset `general-guidelines`
-- Add the following rules:
+Rules allow you to define specific guidelines for Cascade to follow when generating code or providing assistance. They help ensure consistency and adherence to your project's standards.
 
-```markdown
-Developer Profile
-You are a skilled full-stack developer with deep expertise in React, Next.js, JavaScript, TypeScript, HTML, CSS, modern UI/UX frameworks (e.g., TailwindCSS, Shadcn, Radix), and Python/Flask. You prioritize clarity, accuracy, and thoughtful reasoning in all implementations.
+#### Getting Started
 
-Development Principles
+Rules can be defined at two levels:
+- **Global level**: Applied across all workspaces
+- **Workspace level**: Specific to a particular project
 
-- Follow all feature or task requirements precisely and comprehensively.
-- Deliver complete, accurate, and best-practice implementations that follow the DRY (Don't Repeat Yourself) principle.
-- Prioritize clear, readable, and maintainable code over performance optimizations.
-- Ensure every requested feature or function is fully implemented with no placeholders, TODOs, or missing parts.
-- Final code must be thoroughly reviewed and verified as complete and functional.
-- All necessary imports must be included. Component and function names must be semantically meaningful and consistent.
-- Keep communication concise and reduce superfluous commentary.
-- If an answer cannot be determined confidently, state that explicitly.
+To manage rules:
+1. Click the Customizations icon in the top right slider menu in Cascade
+2. Navigate to the Rules panel
+3. Click `+ Global` or `+ Workspace` to create new rules
 
-Code Implementation Guidelines
+#### Core Functionality
 
-- Use early returns where possible to improve readability.
-- Style exclusively using TailwindCSS utility classes. Do not use separate CSS or styled components.
-- Prefer the class: directive instead of using ternary operators inside className attributes.
-- Use descriptive and specific names for all variables, constants, and functions: event handlers should be prefixed with handle, e.g., handleClick, handleKeyDown.
-- Incorporate accessibility (a11y) best practices: add tabIndex="0", aria-label, onClick, onKeyDown, and other appropriate attributes to interactive elements.
-- Use const instead of function declarations for consistency and modern code style.
-- Define explicit types whenever possible to improve type safety and documentation.
+#### Activation Modes
 
-Environment Guidelines
-- Make sure you understand the entire directory structure of the project before running commands (e.g. check if I have a virtual environment before installing dependencies and activate it if I have one)
+Rules can be activated in four different ways:
 
+1. **Manual**: Activated via @mention in Cascade's input box
+2. **Always On**: Applied automatically to all interactions
+3. **Model Decision**: Applied based on a natural language description
+4. **Glob**: Applied to files matching a specific pattern (e.g., `*.js`, `src/**/*.ts`)
+
+#### Example: Regex Documentation Rule
+
+This codebase has a preconfigured rule for regex documentation. To see it in action:
+
+1. Open `.windsurf/rules/documentation-guide.md` to view the rule definition
+2. Ask Cascade to create a regex pattern
+
+The rule ensures all regex patterns include:
+- Plain English explanation of what the pattern matches
+- Example of a matching string
+- Examples of non-matching strings
+
+```javascript
+// This regex validates email addresses
+const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+// Matches: user@example.com
+// Doesn't match: user@, user@example, @example.com
 ```
 
-- Switch the Activation Mode to `Always On`
-- Save the file
+#### Best Practices
+
+* Keep rules simple, concise, and specific
+* Format using bullet points, numbered lists, and markdown
+* Use XML tags to group similar rules together
+* Avoid generic rules already built into Cascade
+* Limit rule files to 6000 characters each
+
+**Note:** If total rules exceed 12,000 characters, priority is given to global rules, followed by workspace rules.
+
+### Workflows
+
+Workflows enable you to define a series of steps that guide Cascade through repetitive tasks, such as deploying services or responding to PR comments. These reusable sequences are saved as markdown files for easy access by you and your team.
+
+#### Getting Started
+
+To create and manage workflows:
+
+1. Click the Customizations icon in the top right slider menu in Cascade
+2. Navigate to the Workflows panel
+3. Click the + Workflow button to create a new workflow
+
+Workflows are saved in the `.windsurf/workflows/` directory within your repository.
+
+#### Core Functionality
+
+Each workflow consists of:
+- A title and description (in YAML frontmatter)
+- A series of numbered steps with specific instructions
+- Optional annotations for automation
+
+To execute a workflow, simply type `/[workflow-name]` in Cascade. For example:
+```
+/fe-build-debug-stage
+```
+
+Cascade will then guide you through each step of the workflow sequentially.
+
+#### Example: Frontend Build and Commit Workflow
+
+This example workflow ensures that frontend changes build correctly before committing them to the codebase:
+
+```markdown
+---
+description: This is a common workflow for immediately preceding a git commit. It builds and stages changes
+---
+
+The changes currently active must correctly build in the frontend directory before committing into the code base.
+
+Follow these steps:
+1. run an `npm run build`
+2a. If the build fails, research why the build failed and begin to suggest fixes. Reason over the easiest path to remediation. Cease the workflow here
+3. If the build succeeds, research what changes are unstaged and the contents of those changes
+4. Stage the changes
+5. propose a meaningful git commit message. Use git commit best practices to convey your understanding of the staged changes that are ready to commit
+```
+
+When you invoke this workflow with `/fe-build-debug-stagecommit`, Cascade will:
+1. Run the build command and check for success
+2. Analyze any unstaged changes if the build succeeds
+3. Help stage the changes
+4. Suggest an appropriate commit message based on the changes
+
+#### Best Practices
+
+* Keep workflows focused on specific, repeatable tasks
+* Use clear, numbered steps for easy following
+* Include decision points for handling different outcomes
+* Add descriptive comments to explain complex steps
+* Use automation annotations judiciously for safe commands
+
+**Note:** You can also ask Cascade to generate workflows for you based on your description of a repetitive process.
+
 
