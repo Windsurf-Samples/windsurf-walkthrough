@@ -4,7 +4,7 @@ Windsurf uses a credit system to track AI usage across different models. You can
 
 To view your credit usage, click the three dots in the top right of the Cascade window and select `Cascade Usage`.
 
-![View your credit usage](assets/cascade-credits.png)
+![View your credit usage](assets/cascade/cascade-credits.png)
 
 ## Rules
 
@@ -12,11 +12,11 @@ Rules are persistent instructions that guide Cascade’s behavior, enforcing thi
 
 To define rules, click the `Customizations` icon at the top right of the Cascade window.
 
-![Access the Customizations tab](assets/cascade-customizations.png)
+![Access the Customizations tab](assets/cascade/cascade-customizations.png)
 
 In the Customizations tab, click the `Rules` tab.
 
-![Rules tab](assets/cascade-rules.png)
+![Rules tab](assets/cascade/cascade-rules.png)
 
 Here, you can add Global Rules (rules applied across all workspaces) and Workspace Rules (rules specific to a single workspace). In this tab, you can see some example rules, which you can modify or delete. To add a new Workspace Rule, click the `+ Workspace` button, give it a name of `full-stack-dev`, and add the following text below to the `Content` section:
 
@@ -43,7 +43,7 @@ Here, you can add Global Rules (rules applied across all workspaces) and Workspa
 
 Once you've saved the file, select `Always On` for the Activation Mode.
 
-![Activation Mode](assets/cascade-rules-activation.png)
+![Activation Mode](assets/cascade/cascade-rules-activation.png)
 
 ## Workflows
 
@@ -51,11 +51,11 @@ Workflows are reusable sequences of steps that automate common tasks (like respo
 
 To define workflows, click the `Customizations` icon at the top right of the Cascade window.
 
-![Access the Customizations tab](assets/cascade-customizations.png)
+![Access the Customizations tab](assets/cascade/cascade-customizations.png)
 
 In the Customizations tab, click the `Workflows` tab.
 
-![Workflows tab](assets/cascade-workflows.png)
+![Workflows tab](assets/cascade/cascade-workflows.png)
 
 Here, you can add Workflows to your workspace. In this tab, you can see some example workflows, which you can modify or delete. To add a new Workflow, click the `+ Workflow` button, give it a description of `Run the project`, and add the following text below to the `Content` section:
 
@@ -79,11 +79,11 @@ Plugins extend Cascade’s capabilities by connecting it to external tools (like
 
 To install plugins, click the `Plugins` icon at the top right of the Cascade window.
 
-![Access the Plugins tab](assets/cascade-plugins.png)
+![Access the Plugins tab](assets/cascade/cascade-plugins.png)
 
 Select Puppeteer from the list of available plugins and click the 'Install' button.
 
-![Install Puppeteer](assets/cascade-puppeteer.png)
+![Install Puppeteer](assets/cascade/cascade-puppeteer.png)
 
 In the Cascade window, you can now use Puppeteer to automate tasks like clicking buttons or filling out forms. Try it out by asking Cascade to `Navigate to https://windsurf.com/. Find the Pricing section and navigate to it. Take a screenshot of the resulting screen.`.
 
@@ -93,4 +93,4 @@ With one click, you can deploy your app directly from the IDE using Windsurf’s
 
 To deploy your application, you can click the `Deploy` icon under the chatbox in the Cascade window or tell Cascade to `Deploy my application`. Cascade will then deploy your application and give you a live URL for your frontend application.
 
-![Deploy](assets/cascade-deploy.png)
+![Deploy](assets/cascade/cascade-deploy.png)
