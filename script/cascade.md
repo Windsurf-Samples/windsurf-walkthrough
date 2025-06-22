@@ -75,13 +75,14 @@ Credit costs and performance will vary by model. Here are some general recommend
 
 | Model                        | Suggested Use Case                      | Credit Cost                     |
 | :--------------------------- | :-------------------------------------- | :------------------------------ |
-| OpenAI o3                    | Planning and implementing complex tasks | 1 credit                        |
-| Claude 3.7 Sonnet | Planning and implementing complex tasks | 1 credit                        |
-| Claude Sonnet 4              | Planning and implementing complex tasks | API Pricing                     |
-| Gemini 2.5 Pro               | Great general purpose model | 0.75 credits (Promotional Pricing)                   |
-| GPT-4.1                      | Quick implementations and edits         | 0.25 credits                    |
-| SWE-1                        | Quick implementations and edits         | Free (Limited Time)             |
+| OpenAI o3                    | Planning and implementing complex tasks | Flat Rate                        |
+| Claude 3.7 Sonnet | Planning and implementing complex tasks | Flat Rate                        |
+| Claude Sonnet 4              | Planning and implementing complex tasks | Dynamic Pricing                    |
+| Gemini 2.5 Pro               | Great general purpose model | Flat Rate                   |
+| GPT-4.1                      | Quick implementations and edits         | Flat Rate                    |
+| SWE-1                        | Quick implementations and edits         | Flat Rate             |
 
+Visit https://docs.windsurf.com/windsurf/models for more details.
 
 ## Rules
 
