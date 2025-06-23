@@ -1,0 +1,64 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.vs/
+*~
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+log/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+bower_components/
+
+# Build directories
+dist/
+build/
+out/
+target/
+
+# Cache directories
+.cache/
+.npm/
+.eslintcache
+.stylelintcache
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Coverage directories
+coverage/
+.coverage
+htmlcov/
+
+# Misc
+.tmp/
+temp/
+tmp/

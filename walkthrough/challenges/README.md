@@ -1,14 +1,14 @@
-# Windsurf Advanced Workshop
+# Windsurf Challenges
 
-Welcome to the advanced workshop for Windsurf! Now that you've learned the basics of the three primary modalities (Cascade, Command, and Tab), it's time to explore more complex and practical use cases. This workshop provides open-ended challenges that encourage you to experiment with different approaches and combinations of Windsurf's capabilities.
+Now that you've learned the basics of the three primary Windsurf modalities (Cascade, Command, and Tab), you may continue to learn and explore. Below are some sample challenges/open-ended tasks that give you an opportunity to see how you would work with Windsurf to accomplish your task.
 
 ## Prerequisites
 
-- Completed the basic tutorials in `../cascade.md`, `../command.md`, and `../windsurf-tab.md`
+- Understanding of the basic modalities (Cascade, Command, and Tab)
 - Familiarity with the contact form application structure
 - Basic understanding of React and Python
 
-## Workshop Challenges
+## Challenges
 
 ### Challenge 1: Code Quality Enhancement
 

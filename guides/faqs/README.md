@@ -1,3 +1,0 @@
-# Windsurf FAQs
-
-Coming soon...

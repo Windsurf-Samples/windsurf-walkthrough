@@ -1,3 +1,0 @@
-# Windsurf Best Practices
-
-Coming soon...

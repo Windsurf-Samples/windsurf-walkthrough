@@ -1,19 +1,19 @@
-# Windsurf Editor Walkthrough
+# Windsurf Walkthrough
 
-Welcome to the Windsurf Editor Walkthrough! This project is designed to help you quickly evaluate how Windsurf works as your AI coding assistant.
+Welcome to the Windsurf Walkthrough! This project includes a sample code base and suggested flows (prompts + user actions) as you get hands-on with the Windsurf Editor.
 
-This sample repository contains a simple contact form application as an example codebase. You may follow the instructions in the `guides/` directory to explore various ways to interact with Windsurf and leverage its capabilities.
+Instead of providing an exhaustive demonstration of all Windsurf's capabilities as your AI coding assistant, this project focuses on a few representative user flows and key takeaways for working with Windsurf.
+
+For the latest information on Windsurf, check out [Windsurf University](https://windsurf.com/university) and the [Windsurf Documentation](https://docs.windsurf.com/windsurf/getting-started)
 
 ## Repository Structure
 
 ```
 ./
 ├── contact-form-app/     # Example codebase (React + Python)
-└── guides/              # Introductory step-by-step Windsurf guides for each modality
-    └── workshop/    # Advanced self-paced workshop following introductory tutorials
-    └── faqs/        # Frequently Asked Questions
-    └── best-practices/ # Best Practices
+└── guides/              # Introductory step-by-step Windsurf guides
     └── for-administrators/ # intro to features of Windsurf relevant to Administrators
+    └── challenges/       # open-ended tasks for  you to continue exploring Windsurf
 ```
 
 ## Getting Started
@@ -33,18 +33,14 @@ You will need to:
 ![Initialize Dev Environment](guides/assets/initialize.png)
 
 
-### Option 1: Introductory Tutorials
+### Introductory Tutorials
 
 Begin by following the [guides](/guides) to explore different ways of working with Windsurf. While these files will be cloned to your local machine, it is recommended you open these files in Github for readability.
 
-### Option 2: Advanced Workshop
+### Contributing
 
-Once you understand the core capabilities of Windsurf, you may proceed to the [Advanced Workshop](guides/workshop/README.md). This self-guided section presents open-ended challenges designed to help you explore and combine Windsurf's features in practical scenarios.
+If you'd like to contribute to this project, please review the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to submit changes and improvements.
 
-The advanced workshop will help you:
-- Apply what you've learned in practical scenarios
-- Discover effective combinations of Windsurf modalities
-- Develop your own workflow preferences
-- Tackle more complex development tasks
+### Disclaimer on Non-deterministic Behavior
 
-Note: While your specific interactions with Windsurf may vary, you should still gain an understanding of the core learning objectives to see how Windsurf can help you in your development workflow.
+While your specific interactions with Windsurf may vary, you should still gain an understanding of the core learning objectives for how Windsurf helps keep you in the flow.
