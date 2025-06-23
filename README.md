@@ -25,14 +25,21 @@ The walkthroughs in `script/` will guide you through various Windsurf features a
 - Work with different interaction modalities
 
 ## Walkthrough Instructions
+### Prerequisites
+You will need to:
+- Install the [Windsurf Editor](https://windsurf.com/download)
+- Clone this repository
+- Run the `/initialize-dev-environment` workflow in Cascade to setup your local development environment
+![Initialize Dev Environment](script/assets/initialize.png)
 
-### Level 1: Introductory Tutorials
+
+### Option 1: Introductory Tutorials
 
 Begin by following the guides in `script/[modality].md` to explore different ways of working with Windsurf. While these files will be cloned to your local machine, it is recommended you open these files in Github for readability.
 
-### Level 2: Advanced Workshop
+### Option 2: Advanced Workshop
 
-Once you've finished the introductory tutorials, you may proceed to the [Advanced Workshop](script/workshop/README.md). This self-guided section presents open-ended challenges designed to help you explore and combine Windsurf's features in practical scenarios.
+Once you understand the core capabilities of Windsurf, you may proceed to the [Advanced Workshop](script/workshop/README.md). This self-guided section presents open-ended challenges designed to help you explore and combine Windsurf's features in practical scenarios.
 
 The advanced workshop will help you:
 - Apply what you've learned in practical scenarios
