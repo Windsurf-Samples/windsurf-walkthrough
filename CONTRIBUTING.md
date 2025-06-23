@@ -45,7 +45,7 @@ We welcome pull requests for bug fixes, improvements, and new features:
 
 - Update the README.md if your changes affect how users interact with the project
 - Document new features thoroughly
-- Update any relevant guides in the `script/` directory
+- Update any relevant guides in the `guides/` directory
 
 ## Testing
 
