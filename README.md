@@ -35,7 +35,7 @@ You will need to:
 
 ### Option 1: Introductory Tutorials
 
-Begin by following the guides in [guides](/guides) to explore different ways of working with Windsurf. While these files will be cloned to your local machine, it is recommended you open these files in Github for readability.
+Begin by following the [guides](/guides) to explore different ways of working with Windsurf. While these files will be cloned to your local machine, it is recommended you open these files in Github for readability.
 
 ### Option 2: Advanced Workshop
 

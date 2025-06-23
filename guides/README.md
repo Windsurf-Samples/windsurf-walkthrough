@@ -4,7 +4,7 @@
 
 Windsurf provides three primary modalities for AI-assisted development:
 
-## 1. Windsurf Cascade
+## 1. [Windsurf Cascade](./cascade.md)
 
 Cascade is a collaborative, agentic AI assistant that represents the evolution of traditional chat assistants. It's designed for complex, multi-step tasks and deep code analysis.
 
@@ -20,7 +20,7 @@ Cascade is a collaborative, agentic AI assistant that represents the evolution o
 - Project-wide code analysis
 - Deployment and infrastructure tasks
 
-## 2. Windsurf Command
+## 2. [Windsurf Command](./command.md)
 
 Command is an inline AI-assisted code editing feature focused on quick, targeted code improvements. It reduces low-entropy keystrokes for small-scoped tasks.
 
@@ -36,7 +36,7 @@ Command is an inline AI-assisted code editing feature focused on quick, targeted
 - Installing packages in the terminal
 - Code style improvements
 
-## 3. Windsurf Tab
+## 3. [Windsurf Tab](./windsurf-tab.md)
 
 Tab is an intelligent code completion tool that speeds up coding through context-aware suggestions and automated actions.
 
@@ -81,6 +81,6 @@ Tab is an intelligent code completion tool that speeds up coding through context
 3. **Tab**: Look for tab indicators while coding and press `Tab` to accept suggestions
 
 For detailed examples and workflows, check the individual modality files:
-- [`cascade.md`](cascade.md)
-- [`command.md`](command.md)
-- [`windsurf-tab.md`](windsurf-tab.md)
+- [`cascade.md`](./cascade.md)
+- [`command.md`](./command.md)
+- [`windsurf-tab.md`](./windsurf-tab.md)
