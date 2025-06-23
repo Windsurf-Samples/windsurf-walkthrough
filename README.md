@@ -11,14 +11,14 @@ For the latest information on Windsurf, check out [Windsurf University](https://
 ```
 ./
 ├── contact-form-app/     # Example codebase (React + Python)
-└── guides/              # Introductory step-by-step Windsurf guides
+└── walkthrough/          # Introductory step-by-step Windsurf guides
     └── for-administrators/ # intro to features of Windsurf relevant to Administrators
     └── challenges/       # open-ended tasks for  you to continue exploring Windsurf
 ```
 
 ## Getting Started
 
-The walkthroughs in `guides/` will guide you through various Windsurf features and demonstrate how to:
+The walkthroughs in `walkthrough/` will guide you through various Windsurf features and demonstrate how to:
 - Collaborate effectively with an AI coding assistant
 - Navigate and understand existing codebases
 - Make targeted code improvements
@@ -30,7 +30,7 @@ You will need to:
 - Install the [Windsurf Editor](https://windsurf.com/download)
 - Clone this repository
 - Run the `/initialize-dev-environment` workflow in Cascade to setup your local development environment
-![Initialize Dev Environment](guides/assets/initialize.png)
+![Initialize Dev Environment](walkthrough/assets/initialize.png)
 
 
 ### Introductory Tutorials
