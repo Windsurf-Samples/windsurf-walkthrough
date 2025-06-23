@@ -71,18 +71,16 @@ Cascade supports a wide range of models to provide maximum developer optionality
 
 Explore prompting with different models to find the best models for your use case! Try prompting Cascade to explain the form validation logic with different models to see the differences in responses. 
 
-Credit costs and performance will vary by model. Here are some general recommendations that have worked well for Windsurf users:
+Credit costs and performance will vary by model (see up-to-date info [here](https://docs.windsurf.com/windsurf/models)). Here are some general recommendations that have worked well for Windsurf users:
 
-| Model                        | Suggested Use Case                      | Credit Cost                     |
-| :--------------------------- | :-------------------------------------- | :------------------------------ |
-| OpenAI o3                    | Planning and implementing complex tasks | Flat Rate                        |
-| Claude 3.7 Sonnet | Planning and implementing complex tasks | Flat Rate                        |
-| Claude Sonnet 4              | Planning and implementing complex tasks | Dynamic Pricing                    |
-| Gemini 2.5 Pro               | Great general purpose model | Flat Rate                   |
-| GPT-4.1                      | Quick implementations and edits         | Flat Rate                    |
-| SWE-1                        | Quick implementations and edits         | Flat Rate             |
-
-Visit https://docs.windsurf.com/windsurf/models for more details.
+| Model | Suggested Use Case | Credit Cost | BYOK? | 
+| :---- | :---- | :---- | :---- |
+| OpenAI o3 | Planning and implementing complex tasks | Flat Rate | No |
+| Claude 3.7 Sonnet | Planning and implementing complex tasks | Flat Rate | No |
+| Claude Sonnet 4 | Planning and implementing complex tasks | Dynamic Pricing | Yes |
+| Gemini 2.5 Pro | Great general purpose model | Flat Rate | No |
+| GPT-4.1 | Quick implementations and edits | Flat Rate | No |
+| SWE-1 | Quick implementations and edits | Flat Rate | No |
 
 ## Rules
 
