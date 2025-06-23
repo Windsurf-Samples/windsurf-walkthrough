@@ -1,10 +1,8 @@
 # Windsurf Editor Modalities
 
-> **Note**: This collection of instructions are for demonstrative purposes, and are intended for the Windsurf Editor. If you are using the Windsurf Plugin, your access to Windsurf Tab and/or Windsurf Cascade may differ from the features in this directory.
+> **Note**: This set of sample instructions is intended for the Windsurf Editor. If you are using the Windsurf Plugins/Extensions, your Windsurf Tab and Cascade experience may vary.
 
-## Overview
-
-Windsurf provides three primary modalities for AI-assisted development, each optimized for different use cases and workflows.
+Windsurf provides three primary modalities for AI-assisted development:
 
 ## 1. Windsurf Cascade
 
@@ -83,6 +81,6 @@ Tab is an intelligent code completion tool that speeds up coding through context
 3. **Tab**: Look for tab indicators while coding and press `Tab` to accept suggestions
 
 For detailed examples and workflows, check the individual modality files:
-- `script/cascade.md`
-- `script/command.md`
-- `script/windsurf-tab.md`
+- [`cascade.md`](cascade.md)
+- [`command.md`](command.md)
+- [`windsurf-tab.md`](windsurf-tab.md)

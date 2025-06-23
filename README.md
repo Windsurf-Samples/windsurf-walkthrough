@@ -1,18 +1,19 @@
-# Windsurf Walkthrough
+# Windsurf Editor Walkthrough
 
-Welcome to the Windsurf Walkthrough repository! This project is designed to help you learn how to effectively collaborate with Windsurf, an advanced AI coding assistant. Using a general-purpose contact form application as our example codebase, you'll explore various ways to interact with and leverage Windsurf's capabilities.
+Welcome to the Windsurf Editor Walkthrough! This project is designed to help you quickly evaluate how Windsurf works as your AI coding assistant.
 
-## Purpose
-
-This repository serves as an interactive tutorial for working with Windsurf's collaborative AI assistant. While the codebase implements a contact form application, its primary purpose is to demonstrate different interaction patterns and features available in the Windsurf editor.
+This sample repository contains a simple contact form application as an example codebase. You may follow the instructions in the `script/` directory to explore various ways to interact with Windsurf and leverage its capabilities.
 
 ## Repository Structure
 
 ```
 ./
 ├── contact-form-app/     # Example codebase (React + Python)
-└── script/              # Introductory step-by-step Windsurf tutorials
+└── script/              # Introductory step-by-step Windsurf guides for each modality
     └── workshop/    # Advanced self-paced workshop following introductory tutorials
+    └── faqs/        # Frequently Asked Questions
+    └── best-practices/ # Best Practices
+    └── for-administrators/ # intro to features of Windsurf relevant to Administrators
 ```
 
 ## Getting Started
@@ -25,13 +26,13 @@ The walkthroughs in `script/` will guide you through various Windsurf features a
 
 ## Walkthrough Instructions
 
-### Step 1: Introductory Tutorials
+### Level 1: Introductory Tutorials
 
-Begin by following the guides in `script/[modality].md` to explore different ways of working with Windsurf. Each walkthrough is designed to showcase specific features and interaction patterns. It is recommended you open these files in Github instead of your IDE for readability
+Begin by following the guides in `script/[modality].md` to explore different ways of working with Windsurf. While these files will be cloned to your local machine, it is recommended you open these files in Github for readability.
 
-### Step 2: Advanced Workshop
+### Level 2: Advanced Workshop
 
-After completing the introductory tutorials, proceed to the advanced workshop in `script/workshop/README.md`. This self-paced workshop provides open-ended challenges that encourage you to experiment with different approaches and combinations of Windsurf's capabilities.
+Once you've finished the introductory tutorials, you may proceed to the [Advanced Workshop](script/workshop/README.md). This self-guided section presents open-ended challenges designed to help you explore and combine Windsurf's features in practical scenarios.
 
 The advanced workshop will help you:
 - Apply what you've learned in practical scenarios
@@ -39,4 +40,4 @@ The advanced workshop will help you:
 - Develop your own workflow preferences
 - Tackle more complex development tasks
 
-Note: Due to the probabilistic nature of AI interactions, your specific experience may vary while maintaining the core learning objectives.
+Note: While your specific interactions with Windsurf may vary, you should still gain an understanding of the core learning objectives to see how Windsurf can help you in your development workflow.
