@@ -45,3 +45,5 @@ For guided examples and workflows, check the individual modality files:
 - [`cascade.md`](./cascade.md)
 - [`command.md`](./command.md)
 - [`windsurf-tab.md`](./windsurf-tab.md)
+
+Once you've completed exploring the core Windsurf modalities, visit the [Common Use Cases](./common-use-cases.md) section to learn more about common development use cases in Windsurf.
