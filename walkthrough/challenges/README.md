@@ -1,11 +1,13 @@
 # Windsurf Challenges
 
-Now that you've learned the basics of the three primary Windsurf modalities (Cascade, Command, and Tab), you may continue to learn and explore. Below are some sample challenges/open-ended tasks that give you an opportunity to see how you would work with Windsurf to accomplish your task.
+Now that you've learned the basics of Windsurf's capabilities (Cascade, Command, and Tab), you should continue to learn and explore!
+
+Below are some sample challenges/open-ended tasks that give you an opportunity to see how you would work with Windsurf to accomplish your task.
 
 ## Prerequisites
 
-- Understanding of the basic modalities (Cascade, Command, and Tab)
-- Familiarity with the contact form application structure
+- Understanding of Windsurf's capabilities (Cascade, Command, and Tab)
+- Familiarity with the `contact-form-app` application structure
 - Basic understanding of React and Python
 
 ## Challenges

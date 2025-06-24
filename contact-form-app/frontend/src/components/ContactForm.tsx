@@ -23,7 +23,6 @@ const sanitizeInputString = (inputString: string): string => {
   return noSpecialCharacters;
 };
 
-// Validates string length is between min and max
 const isStringLengthValid = (str: string, min: number, max: number): boolean => {
   const length = str.trim().length;
   if (length < min) {
@@ -60,6 +59,9 @@ const ContactForm: React.FC = () => {
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
+    if (!formData.name.trim()) {
+      // Windsurf will suggest validation logic
+    }
     
     // Validate name (2-50 characters)
     const sanitizedName = sanitizeInputString(formData.name);
