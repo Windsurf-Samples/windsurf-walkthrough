@@ -1,78 +1,39 @@
 # Windsurf Editor Modalities
 
-> **Note**: This set of sample instructions is intended for the Windsurf Editor. If you are using the Windsurf Plugins/Extensions, your Windsurf Tab and Cascade experience may vary.
+> **Note**: This walkthrough is intended for the Windsurf Editor. If you are using the Windsurf Plugins/Extensions, your Windsurf Tab and Cascade experience may vary.
 
-Windsurf provides three primary modalities for AI-assisted development:
+Windsurf provides three primary modalities for AI-assisted development. First time in Windsurf? Explore the modalities below for hands-on examples and real user flows. 
+
+For full documentation on Windsurf modalities, see the [Windsurf Documentation](https://docs.windsurf.com/windsurf/getting-started)
 
 ## 1. [Windsurf Cascade](./cascade.md)
 
-Cascade is a collaborative, agentic AI assistant that represents the evolution of traditional chat assistants. It's designed for complex, multi-step tasks and deep code analysis.
+Explore Cascade to experience Windsurf's collaborative, agentic experience. 
+### Key Takeaways:
+In this walkthrough, you’ll see how Cascade can help you:
+- Plan and execute complex programming tasks with ease
+- Turn multi-step workflows into simple, customizable prompts
+- Effortlessly pull context from across your workspace right when you need it
 
-### Key Features
-- **Code Analysis**: Analyzes codebases, explains code, and suggests improvements
-- **Multi-tool Integration**: Access to terminal commands, file editing, and browser previews
-- **Context-Aware**: Understands recent terminal outputs and browser interactions
-- **Workflow Automation**: Supports custom workflows for repetitive tasks
-
-### Common Use Cases
-- Complex refactoring across multiple files
-- Debugging build errors and test failures
-- Project-wide code analysis
-- Deployment and infrastructure tasks
 
 ## 2. [Windsurf Command](./command.md)
 
-Command is an inline AI-assisted code editing feature focused on quick, targeted code improvements. It reduces low-entropy keystrokes for small-scoped tasks.
+Explore Command to experience a fast, inline AI-powered code assistant.
+### Key Takeaways:
+In this walkthrough, you’ll see how Command can help you:
+- Instantly edit and refactor code directly in the editor
+- Generate proper CLI syntax in the terminal using natural language
 
-### Key Features
-- **Inline Editing**: Quick code modifications through popup interface
-- **CodeLens Integration**: Direct access to common actions via editor breadcrumbs
-- **Terminal Integration**: Natural language package management
-- **Follow-up Refinement**: Iterative improvements through follow-up prompts
-
-### Common Use Cases
-- Code cleanup and refactoring
-- Adding documentation
-- Installing packages in the terminal
-- Code style improvements
 
 ## 3. [Windsurf Tab](./windsurf-tab.md)
 
-Tab is an intelligent code completion tool that speeds up coding through context-aware suggestions and automated actions.
+Explore Tab to accelerate your coding with intelligent, context-aware autocompletions.
+### Key Takeaways:
+In this walkthrough, you’ll see how Tab can help you:
+- Accept completions and automate repetitive code patterns with a single keystroke
+- Effortlessly jump between code sections using next-intent prediction
+- Generate suggestions before, after, and between lines of code
 
-### Key Features
-- **Smart Autocomplete**: Context-aware code completions
-- **Supercomplete**: Multi-line code block suggestions
-- **Tab to Jump**: Intelligent cursor positioning
-- **Tab to Import**: Automatic dependency management
-
-### Common Use Cases
-- Code pattern completion
-- Boilerplate generation
-- Smart code navigation
-- Dependency imports
-
-## Best Practices
-
-### When to Use Each Modality
-
-- **Use Cascade** for:
-  - Complex, multi-step tasks
-  - Cross-file changes
-  - Project-wide analysis
-  - Deployment and configuration
-
-- **Use Command** for:
-  - Quick, single-file edits
-  - Code cleanup
-  - Adding documentation
-  - Package management
-
-- **Use Tab** for:
-  - Rapid code completion
-  - Repetitive patterns
-  - Import management
-  - Navigation between related code sections
 
 ## Getting Started
 
@@ -80,7 +41,7 @@ Tab is an intelligent code completion tool that speeds up coding through context
 2. **Command**: Use `Command + I` or click the "Edit" button that appears when selecting code
 3. **Tab**: Look for tab indicators while coding and press `Tab` to accept suggestions
 
-For detailed examples and workflows, check the individual modality files:
+For guided examples and workflows, check the individual modality files:
 - [`cascade.md`](./cascade.md)
 - [`command.md`](./command.md)
 - [`windsurf-tab.md`](./windsurf-tab.md)

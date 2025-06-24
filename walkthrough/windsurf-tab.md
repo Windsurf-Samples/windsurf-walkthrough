@@ -2,6 +2,8 @@
 
 Windsurf Tab is a powerful AI-assisted coding feature that helps you write code faster and more efficiently. This demo will showcase its capabilities using a Contact Form application as an example.
 
+See detailed documentation on Tab [Here](https://docs.windsurf.com/tab/overview).
+
 ## Setup
 
 1. Ensure you are at the git HEAD with `git reset HEAD --hard`
