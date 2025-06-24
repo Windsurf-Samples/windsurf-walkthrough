@@ -10,25 +10,22 @@ For the latest information on Windsurf, check out [Windsurf University](https://
 
 ```
 ./
-├── contact-form-app/     # Example codebase (React + Python)
-└── walkthrough/          # Introductory step-by-step Windsurf guides
-    └── for-administrators/ # intro to features of Windsurf relevant to Administrators
-    └── challenges/       # open-ended tasks for  you to continue exploring Windsurf
+├── contact-form-app/        # Example codebase (React + Python)
+└── walkthrough/             # Introductory step-by-step walkthroughs
+    └── for-administrators/  # Reference material for Windsurf Administrators
+    └── challenges/          # Open-ended tasks for Windsurf users to continue exploring
 ```
 
 ## Getting Started
 
-The walkthroughs in `walkthrough/` will guide you through various Windsurf features and demonstrate how to:
-- Collaborate effectively with an AI coding assistant
-- Navigate and understand existing codebases
-- Make targeted code improvements
-- Work with different interaction modalities
+You will soon proceed to the guides in [walkthrough](./walkthrough) to showcase how to effectively collaborate with your AI coding assistant
 
 ## Walkthrough Instructions
 ### Prerequisites
 You will need to:
 - Install the [Windsurf Editor](https://windsurf.com/download)
 - Clone this repository
+![Clone Repository](walkthrough/assets/clone.gif)
 - Run the `/initialize-dev-environment` workflow in Cascade to setup your local development environment
 ![Initialize Dev Environment](walkthrough/assets/initialize.png)
 
@@ -43,4 +40,4 @@ If you'd like to contribute to this project, please review the [CONTRIBUTING.md]
 
 ### Disclaimer on Non-deterministic Behavior
 
-While your specific interactions with Windsurf may vary, you should still gain an understanding of the core learning objectives for how Windsurf helps keep you in the flow.
+While your specific interactions with Windsurf may vary, the goal is to demonstrate how Windsurf helps you stay in the flow so you can dream bigger.
