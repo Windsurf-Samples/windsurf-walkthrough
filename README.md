@@ -18,9 +18,6 @@ For the latest information on Windsurf, check out [Windsurf University](https://
 
 ## Getting Started
 
-You will soon proceed to the guides in [walkthrough](./walkthrough) to showcase how to effectively collaborate with your AI coding assistant
-
-## Walkthrough Instructions
 ### Prerequisites
 You will need to:
 - Install the [Windsurf Editor](https://windsurf.com/download)
@@ -31,8 +28,9 @@ You will need to:
 
 
 ### Introductory Tutorials
+Begin by working through the [walkthrough](./walkthrough) to explore sample flows that demonstrate how to effectively collaborate with your AI coding assistant. 
 
-Begin by following the [guides](/guides) to explore different ways of working with Windsurf. While these files will be cloned to your local machine, it is recommended you open these files in Github for readability.
+While these files are available on your local machine, it is recommended you open them in Github for better readability.
 
 ### Contributing
 
