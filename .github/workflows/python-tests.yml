@@ -71,6 +71,7 @@ jobs:
           path: ./
 
       - name: Trigger Devin Session for Test Failure
+        id: trigger-devin
         # This step sends a request to the Devin API to create a new session for test triage
         run: |
           # Extract relevant information from the test failure
@@ -97,13 +98,25 @@ jobs:
           # Send request to Devin API v1
           # Check that the DEVIN_API_KEY secret exists before making the API call
           if [[ -n "${{ secrets.DEVIN_API_KEY }}" ]]; then
-            curl -X POST "https://api.devin.ai/v1/sessions" \
+            # Capture the API response
+            RESPONSE=$(curl -X POST "https://api.devin.ai/v1/sessions" \
               -H "Authorization: Bearer ${{ secrets.DEVIN_API_KEY }}" \
               -H "Content-Type: application/json" \
               -d "$JSON_PAYLOAD" \
-              --fail
+              --fail --silent)
             
-            echo "Successfully triggered Devin session for test failure - Commit: $COMMIT_SHA"
+            # Extract session URL from response using jq or basic parsing
+            SESSION_URL=$(echo "$RESPONSE" | grep -o '"url":"[^"]*"' | cut -d'"' -f4)
+            SESSION_ID=$(echo "$RESPONSE" | grep -o '"session_id":"[^"]*"' | cut -d'"' -f4)
+            
+            echo "✅ Successfully triggered Devin session for test failure"
+            echo "📋 Commit: $COMMIT_SHA"
+            echo "🔗 Devin Session URL: $SESSION_URL"
+            echo "🆔 Session ID: $SESSION_ID"
+            
+            # Set outputs for use in other steps
+            echo "devin_session_url=$SESSION_URL" >> $GITHUB_OUTPUT
+            echo "devin_session_id=$SESSION_ID" >> $GITHUB_OUTPUT
           else
             echo "Error: Requires Devin API key"
             exit 1
@@ -114,9 +127,25 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const devinUrl = '${{ steps.trigger-devin.outputs.devin_session_url }}';
+            const sessionId = '${{ steps.trigger-devin.outputs.devin_session_id }}';
+            
+            let body = '🤖 **Test Failure Detected**\n\nPython tests failed in `contact-form-app/backend`. A Devin session has been automatically triggered to triage the issue.';
+            
+            if (devinUrl) {
+              body += `\n\n🔗 **[Open Devin Session](${devinUrl})**\n📋 Session ID: \`${sessionId}\``;
+            }
+            
+            body += `\n\n**Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🤖 **Test Failure Detected**\n\nPython tests failed in `contact-form-app/backend`. A Devin session has been automatically triggered to triage the issue.\n\n**Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
-            })
+              body: body
+            });
+            
+            console.log('Posted PR comment with Devin session info');
+            if (devinUrl) {
+              console.log('Devin Session URL:', devinUrl);
+            }
