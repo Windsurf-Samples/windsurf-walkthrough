@@ -98,12 +98,29 @@ jobs:
           # Send request to Devin API v1
           # Check that the DEVIN_API_KEY secret exists before making the API call
           if [[ -n "${{ secrets.DEVIN_API_KEY }}" ]]; then
-            # Capture the API response
+            echo "🔍 API Key detected (length: ${#DEVIN_API_KEY})"
+            echo "🔍 First 10 characters: ${DEVIN_API_KEY:0:10}"
+            
+            # Capture the API response with detailed error output
+            echo "📡 Making API call to Devin..."
             RESPONSE=$(curl -X POST "https://api.devin.ai/v1/sessions" \
               -H "Authorization: Bearer ${{ secrets.DEVIN_API_KEY }}" \
               -H "Content-Type: application/json" \
               -d "$JSON_PAYLOAD" \
-              --fail --silent)
+              --fail --silent --show-error)
+            
+            CURL_EXIT_CODE=$?
+            echo "📊 Curl exit code: $CURL_EXIT_CODE"
+            
+            if [ $CURL_EXIT_CODE -ne 0 ]; then
+              echo "❌ API call failed. Trying again with verbose output for debugging..."
+              curl -X POST "https://api.devin.ai/v1/sessions" \
+                -H "Authorization: Bearer ${{ secrets.DEVIN_API_KEY }}" \
+                -H "Content-Type: application/json" \
+                -d "$JSON_PAYLOAD" \
+                --verbose
+              exit 1
+            fi
             
             # Extract session URL from response using jq or basic parsing
             SESSION_URL=$(echo "$RESPONSE" | grep -o '"url":"[^"]*"' | cut -d'"' -f4)
