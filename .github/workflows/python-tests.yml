@@ -105,9 +105,8 @@ jobs:
           )
           
           # Send request to Devin API
-          # The regular expression below validates that the API key is properly formatted before use
-          # It matches the pattern of a valid Devin API key: devin_ followed by 32 alphanumeric characters
-          if [[ "${{ secrets.DEVIN_API_KEY }}" =~ ^devin_[a-zA-Z0-9]{32}$ ]]; then
+          # Check that the DEVIN_API_KEY secret exists before making the API call
+          if [[ -n "${{ secrets.DEVIN_API_KEY }}" ]]; then
             curl -X POST "https://api.devin.ai/sessions" \
               -H "Authorization: Bearer ${{ secrets.DEVIN_API_KEY }}" \
               -H "Content-Type: application/json" \
@@ -116,8 +115,7 @@ jobs:
             
             echo "Successfully triggered Devin session for test failure - Commit: $COMMIT_SHA"
           else
-            echo "Error: Invalid Devin API key format"
-            echo "Expected format: devin_[32 alphanumeric characters]"
+            echo "Error: Requires Devin API key"
             exit 1
           fi
 
