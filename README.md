@@ -1,4 +1,5 @@
 # Windsurf Walkthrough
+simple change
 
 Welcome to the Windsurf Walkthrough! This project includes a sample code base and suggested flows (prompts + user actions) as you get hands-on with the Windsurf Editor.
 
