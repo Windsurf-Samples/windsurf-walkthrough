@@ -10,6 +10,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      test_failed: ${{ steps.test_status.outputs.test_failed }}
     defaults:
       run:
         working-directory: ./contact-form-app/backend
