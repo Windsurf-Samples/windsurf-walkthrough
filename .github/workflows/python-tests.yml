@@ -85,29 +85,19 @@ jobs:
           fi
           
           # Create a JSON payload for the Devin API
-          # The regular expression below constructs a valid JSON string with proper escaping
-          # It matches the format required by the Devin API for creating a new session
+          # Create JSON payload for Devin API v1 with required prompt and playbook_id fields
           JSON_PAYLOAD=$(cat << EOF
           {
-            "task": "Triage Python test failures in contact-form-app/backend - Commit: $COMMIT_SHA",
-            "repository": {
-              "url": "${{ github.server_url }}/${{ github.repository }}",
-              "branch": "$BRANCH_NAME"
-            },
-            "context": {
-              "workflow_run_id": "$WORKFLOW_RUN_ID",
-              "test_output": "$TEST_OUTPUT",
-              "working_directory": "contact-form-app/backend",
-              "test_command": "pytest -v --tb=short"
-            }
+            "prompt": "Triage Python test failures in contact-form-app/backend - Commit: $COMMIT_SHA\n\nRepository: ${{ github.server_url }}/${{ github.repository }}\nBranch: $BRANCH_NAME\nWorkflow Run: $WORKFLOW_RUN_ID\nWorking Directory: contact-form-app/backend\nTest Command: pytest -v --tb=short\n\nTest Output:\n$TEST_OUTPUT",
+            "playbook_id": "playbook-0dfd97ea32d94337b2507ba897c47b21"
           }
           EOF
           )
           
-          # Send request to Devin API
+          # Send request to Devin API v1
           # Check that the DEVIN_API_KEY secret exists before making the API call
           if [[ -n "${{ secrets.DEVIN_API_KEY }}" ]]; then
-            curl -X POST "https://api.devin.ai/sessions" \
+            curl -X POST "https://api.devin.ai/v1/sessions" \
               -H "Authorization: Bearer ${{ secrets.DEVIN_API_KEY }}" \
               -H "Content-Type: application/json" \
               -d "$JSON_PAYLOAD" \
