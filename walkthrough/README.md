@@ -46,4 +46,4 @@ Once you've explored the core Windsurf modalities, you can look at [Common Use C
 
 Alternatively, [Challenges](./challenges/README.md) provide some open-ended tasks for you to continue exploring Windsurf.
 
-We also have provided a [for Administrators](./for-administrators.md) document to point you to references for key administrative features.
+We also have provided a [for Administrators](./for-administrators) document to point you to references for key administrative features.
