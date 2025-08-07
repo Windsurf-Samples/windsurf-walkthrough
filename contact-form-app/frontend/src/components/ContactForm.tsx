@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextField, Button, Box, Paper, Typography } from '@mui/material';
 
 // String utility functions - needing to be moved to utils file
 // Validates email using regex pattern
@@ -125,46 +126,62 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="contact-form">
-      <div>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
+    <Paper elevation={3} sx={{ padding: 4, maxWidth: 600, margin: '2rem auto' }}>
+      <Typography variant="h4" component="h2" gutterBottom>
+        Contact Us
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <TextField
+          label="Name"
           name="name"
           value={formData.name}
           onChange={handleChange}
+          error={!!errors.name}
+          helperText={errors.name}
+          variant="outlined"
+          fullWidth
+          required
         />
-        {errors.name && <div className="error-message">{errors.name}</div>}
-      </div>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
+        <TextField
+          label="Email"
           name="email"
+          type="email"
           value={formData.email}
           onChange={handleChange}
+          error={!!errors.email}
+          helperText={errors.email}
+          variant="outlined"
+          fullWidth
+          required
         />
-        {errors.email && <div className="error-message">{errors.email}</div>}
-      </div>
-      <div>
-        <label htmlFor="message">Message:</label>
-        <textarea
-          id="message"
+        <TextField
+          label="Message"
           name="message"
           value={formData.message}
           onChange={handleChange}
+          error={!!errors.message}
+          helperText={errors.message}
+          variant="outlined"
+          multiline
+          rows={4}
+          fullWidth
+          required
         />
-        {errors.message && <div className="error-message">{errors.message}</div>}
-      </div>
-      <button 
-        type="submit" 
-        disabled={Object.keys(errors).length > 0 || !formData.name || !formData.email || !formData.message}
-      >
-        Submit
-      </button>
-    </form>
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          disabled={Object.keys(errors).length > 0 || !formData.name || !formData.email || !formData.message}
+          sx={{ 
+            backgroundColor: '#007bff',
+            '&:hover': { backgroundColor: '#0056b3' },
+            marginTop: 2
+          }}
+        >
+          Submit
+        </Button>
+      </Box>
+    </Paper>
   );
 };
 
