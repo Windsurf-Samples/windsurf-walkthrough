@@ -126,10 +126,21 @@ jobs:
         env:
           DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
         run: |
-          # Read the scan results
-          SCAN_RESULTS=$(cat snyk-results/all-findings.json)
+          # Extract only the essential findings (no metadata/rules)
+          FILTERED_RESULTS=$(cat snyk-results/all-findings.json | jq '{
+            "findings": [
+              .runs[]?.results[]? | {
+                "ruleId": .ruleId,
+                "level": .level,
+                "message": .message.text,
+                "file": .locations[0].physicalLocation.artifactLocation.uri,
+                "line": .locations[0].physicalLocation.region.startLine,
+                "description": "Debug mode enabled in production code"
+              }
+            ]
+          }')
           
-          # Create the prompt with embedded findings
+          # Create the prompt with filtered findings
           cat > prompt.txt << 'EOF'
           You are Security Resolver Devin. Fix all security issues found by Snyk Code scan.
           
@@ -142,11 +153,11 @@ jobs:
           3. Fix all security issues found
           4. Create a pull request with the fixes
           
-          Scan Results:
+          Security Findings:
           EOF
           
-          # Append scan results to the prompt
-          echo "$SCAN_RESULTS" >> prompt.txt
+          # Append filtered results to the prompt
+          echo "$FILTERED_RESULTS" >> prompt.txt
           
           # Convert to JSON-safe format
           ESCAPED_PROMPT=$(cat prompt.txt | jq -Rs .)
