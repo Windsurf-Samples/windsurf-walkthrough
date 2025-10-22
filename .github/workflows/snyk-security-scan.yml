@@ -105,7 +105,22 @@ jobs:
           
           # Run Snyk test with JSON output for vulnerabilities
           echo "Running Snyk vulnerability scan..."
-          snyk test --org=$SNYK_ORG_ID --json --severity-threshold=medium > snyk-results/vulnerabilities.json || true
+          
+          # Scan frontend project
+          echo "Scanning frontend project..."
+          cd contact-form-app/frontend
+          snyk test --org=$SNYK_ORG_ID --json --severity-threshold=medium > ../../snyk-results/frontend-vulnerabilities.json || true
+          cd ../..
+          
+          # Scan backend project  
+          echo "Scanning backend project..."
+          cd contact-form-app/backend
+          snyk test --org=$SNYK_ORG_ID --json --severity-threshold=medium > ../../snyk-results/backend-vulnerabilities.json || true
+          cd ../..
+          
+          # Combine vulnerability results
+          echo "Combining vulnerability results..."
+          jq -s 'map(select(.vulnerabilities)) | map(.vulnerabilities) | flatten | {"vulnerabilities": .}' snyk-results/frontend-vulnerabilities.json snyk-results/backend-vulnerabilities.json > snyk-results/vulnerabilities.json || echo '{"vulnerabilities": []}' > snyk-results/vulnerabilities.json
           
           # Run Snyk code scan for static analysis (if available)
           echo "Running Snyk code scan..."
