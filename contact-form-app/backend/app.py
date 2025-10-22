@@ -25,11 +25,11 @@ def submit_contact():
     
 
     contacts.append(contact)
-    return jsonify({'status': 'success'}), 201
+    return jsonify({'status': 'success', **contact}), 201
 
 @app.route('/api/contacts', methods=['GET'])
 def get_contacts():
     return jsonify(contacts)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=False, port=5000)
