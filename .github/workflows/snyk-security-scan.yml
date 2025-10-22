@@ -125,27 +125,37 @@ jobs:
         if: steps.snyk-scan.outputs.has-findings == 'true'
         env:
           DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
-          
-          SECURITY_PROMPT: |
-            You are Security Resolver Devin. Fix all security issues found by Snyk Code scan.
-            
-            Repository: ${{ github.repository }}
-            Branch: ${{ github.ref_name }}
-            
-            Tasks:
-            1. Clone the repository locally
-            2. Review the Snyk Code findings in the attached scan results
-            3. Fix all security issues found
-            4. Create a pull request with the fixes
-            
-            Scan Results:
-            $(cat snyk-results/all-findings.json)
-
         run: |
-          # Convert multiline string to JSON-safe format
-          ESCAPED_PROMPT=$(echo "$SECURITY_PROMPT" | jq -Rs .)
+          # Read the scan results
+          SCAN_RESULTS=$(cat snyk-results/all-findings.json)
+          
+          # Create the prompt with embedded findings
+          cat > prompt.txt << 'EOF'
+          You are Security Resolver Devin. Fix all security issues found by Snyk Code scan.
+          
+          Repository: ${{ github.repository }}
+          Branch: ${{ github.ref_name }}
+          
+          Tasks:
+          1. Clone the repository locally
+          2. Review the Snyk Code findings below
+          3. Fix all security issues found
+          4. Create a pull request with the fixes
+          
+          Scan Results:
+          EOF
+          
+          # Append scan results to the prompt
+          echo "$SCAN_RESULTS" >> prompt.txt
+          
+          # Convert to JSON-safe format
+          ESCAPED_PROMPT=$(cat prompt.txt | jq -Rs .)
 
           echo "Creating Devin security resolution session..."
+          echo "Prompt preview (first 500 chars):"
+          head -c 500 prompt.txt
+          echo ""
+          echo "..."
           RESPONSE=$(curl -s -X POST \
             -H "Authorization: Bearer $DEVIN_API_KEY" \
             -H "Content-Type: application/json" \
