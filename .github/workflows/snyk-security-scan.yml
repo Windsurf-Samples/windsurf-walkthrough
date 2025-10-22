@@ -109,13 +109,13 @@ jobs:
           # Scan frontend project
           echo "Scanning frontend project..."
           cd contact-form-app/frontend
-          snyk test --org=$SNYK_ORG_ID --json --severity-threshold=medium > ../../snyk-results/frontend-vulnerabilities.json || true
+          snyk code test --org=$SNYK_ORG_ID --json --severity-threshold=medium > ../../snyk-results/frontend-vulnerabilities.json || true
           cd ../..
           
           # Scan backend project  
           echo "Scanning backend project..."
           cd contact-form-app/backend
-          snyk test --org=$SNYK_ORG_ID --json --severity-threshold=medium > ../../snyk-results/backend-vulnerabilities.json || true
+          snyk code test --org=$SNYK_ORG_ID --json --severity-threshold=medium > ../../snyk-results/backend-vulnerabilities.json || true
           cd ../..
           
           # Combine vulnerability results
