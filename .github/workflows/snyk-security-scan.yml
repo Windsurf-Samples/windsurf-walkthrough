@@ -32,15 +32,48 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
       - name: Install dependencies
         run: |
-          if [ -f package.json ]; then
+          # Install dependencies for multi-project structure
+          echo "Installing dependencies for all projects..."
+          
+          # Install root dependencies if they exist and are not empty
+          if [ -f package.json ] && [ "$(jq '.dependencies // {} | length' package.json)" -gt 0 ]; then
+            echo "Installing root Node.js dependencies..."
             npm ci
-          elif [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          elif [ -f Gemfile ]; then
-            bundle install
           fi
+          
+          # Install frontend dependencies
+          if [ -f contact-form-app/frontend/package.json ]; then
+            echo "Installing frontend dependencies..."
+            cd contact-form-app/frontend
+            npm ci
+            cd ../..
+          fi
+          
+          # Install backend dependencies
+          if [ -f contact-form-app/backend/requirements.txt ]; then
+            echo "Installing backend Python dependencies..."
+            pip install -r contact-form-app/backend/requirements.txt
+          fi
+          
+          # Install other project dependencies if they exist
+          find . -name "package.json" -not -path "./node_modules/*" -not -path "./contact-form-app/frontend/node_modules/*" | while read package_file; do
+            dir=$(dirname "$package_file")
+            if [ "$dir" != "." ] && [ "$dir" != "./contact-form-app/frontend" ]; then
+              echo "Installing dependencies in $dir..."
+              cd "$dir"
+              if [ -f package-lock.json ] || [ -f yarn.lock ]; then
+                npm ci 2>/dev/null || npm install
+              fi
+              cd - > /dev/null
+            fi
+          done
 
       - name: Install Snyk CLI
         run: |
