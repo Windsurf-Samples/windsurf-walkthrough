@@ -103,137 +103,43 @@ jobs:
           # Create output directory
           mkdir -p snyk-results
           
-          # Run Snyk test with JSON output for vulnerabilities
-          echo "Running Snyk vulnerability scan..."
+          # Run Snyk Code SAST scan and send directly to Devin
+          echo "Running Snyk Code SAST scan..."
           
-          # Scan frontend project
-          echo "Scanning frontend project..."
-          cd contact-form-app/frontend
-          snyk code test --org=$SNYK_ORG_ID --json --severity-threshold=medium > ../../snyk-results/frontend-vulnerabilities.json || true
-          cd ../..
+          # Run single scan on entire repository
+          snyk code test --org=$SNYK_ORG_ID --json --severity-threshold=medium > snyk-results/all-findings.json || echo "Scan completed with findings"
           
-          # Scan backend project  
-          echo "Scanning backend project..."
-          cd contact-form-app/backend
-          snyk code test --org=$SNYK_ORG_ID --json --severity-threshold=medium > ../../snyk-results/backend-vulnerabilities.json || true
-          cd ../..
+          # Check if we have findings to send to Devin
+          FINDINGS_COUNT=$(cat snyk-results/all-findings.json | jq '.runs[]?.results[]? | select(.level == "warning" or .level == "error")' | jq -s length)
           
-          # Combine vulnerability results
-          echo "Combining vulnerability results..."
-          jq -s 'map(select(.vulnerabilities)) | map(.vulnerabilities) | flatten | {"vulnerabilities": .}' snyk-results/frontend-vulnerabilities.json snyk-results/backend-vulnerabilities.json > snyk-results/vulnerabilities.json || echo '{"vulnerabilities": []}' > snyk-results/vulnerabilities.json
-          
-          # Run Snyk code scan for static analysis (if available)
-          echo "Running Snyk code scan..."
-          if snyk code test --org=$SNYK_ORG_ID --json --severity-threshold=medium > snyk-results/code-issues.json 2>/dev/null; then
-            echo "✅ Snyk Code scan completed"
+          if [ "$FINDINGS_COUNT" -gt 0 ]; then
+            echo "✅ Found $FINDINGS_COUNT security findings - sending to Devin"
+            echo "has-findings=true" >> $GITHUB_OUTPUT
           else
-            echo "⚠️ Snyk Code not available for this organization"
-            echo '{"runs": [{"results": []}]}' > snyk-results/code-issues.json
+            echo "✅ No security findings detected"
+            echo "has-findings=false" >> $GITHUB_OUTPUT
           fi
-          
-          # Check if we have any medium+ severity findings
-          MEDIUM_HIGH_VULNS=$(cat snyk-results/vulnerabilities.json | jq '.vulnerabilities[]? | select(.severity == "medium" or .severity == "high" or .severity == "critical")' | jq -s length)
-          MEDIUM_HIGH_CODE_ISSUES=$(cat snyk-results/code-issues.json | jq '.runs[]?.results[]? | select(.level == "warning" or .level == "error")' | jq -s length)
-          
-          echo "medium-high-vulns=$MEDIUM_HIGH_VULNS" >> $GITHUB_OUTPUT
-          echo "medium-high-code-issues=$MEDIUM_HIGH_CODE_ISSUES" >> $GITHUB_OUTPUT
-          
-          # Store scan results as artifacts
-          echo "Vulnerability scan found $MEDIUM_HIGH_VULNS medium+ severity vulnerabilities"
-          echo "Code scan found $MEDIUM_HIGH_CODE_ISSUES medium+ severity code issues"
 
-      - name: Parse Medium+ Severity Findings
-        id: parse-findings
-        if: steps.snyk-scan.outputs.medium-high-vulns > 0 || steps.snyk-scan.outputs.medium-high-code-issues > 0
-        run: |
-          # Parse vulnerability findings
-          VULN_SUMMARY=""
-          if [ -f snyk-results/vulnerabilities.json ] && [ "$(cat snyk-results/vulnerabilities.json | jq '.vulnerabilities | length')" -gt 0 ]; then
-            VULN_SUMMARY=$(cat snyk-results/vulnerabilities.json | jq -r '
-              .vulnerabilities[]? | 
-              select(.severity == "medium" or .severity == "high" or .severity == "critical") | 
-              "- **\(.title)** (\(.severity))\n  Package: \(.packageName)@\(.version)\n  Path: \(.from | join(" > "))\n  Fix: \(.fixedIn // "No fix available")\n  Description: \(.description)\n"
-            ')
-          fi
-          
-          # Parse code issue findings
-          CODE_SUMMARY=""
-          if [ -f snyk-results/code-issues.json ] && [ "$(cat snyk-results/code-issues.json | jq '.runs[]?.results | length')" -gt 0 ]; then
-            CODE_SUMMARY=$(cat snyk-results/code-issues.json | jq -r '
-              .runs[]?.results[]? | 
-              select(.level == "warning" or .level == "error") | 
-              "- **\(.ruleId)** (\(.level))\n  File: \(.locations[0].physicalLocation.artifactLocation.uri)\n  Line: \(.locations[0].physicalLocation.region.startLine)\n  Message: \(.message.text)\n"
-            ')
-          fi
-          
-          # Combine findings
-          FINDINGS_SUMMARY="# Medium+ Severity Security Findings\n\n"
-          
-          if [ ! -z "$VULN_SUMMARY" ]; then
-            FINDINGS_SUMMARY="${FINDINGS_SUMMARY}## Vulnerability Findings:\n${VULN_SUMMARY}\n\n"
-          fi
-          
-          if [ ! -z "$CODE_SUMMARY" ]; then
-            FINDINGS_SUMMARY="${FINDINGS_SUMMARY}## Code Security Issues:\n${CODE_SUMMARY}\n\n"
-          fi
-          
-          # Save findings to file for Devin
-          echo -e "$FINDINGS_SUMMARY" > snyk-results/findings-summary.md
-          
-          # Output for next step
-          echo "findings-available=true" >> $GITHUB_OUTPUT
-          echo "findings-count=$((${MEDIUM_HIGH_VULNS:-0} + ${MEDIUM_HIGH_CODE_ISSUES:-0}))" >> $GITHUB_OUTPUT
-
-      - name: Create Devin Security Resolution Session
+      - name: Send Findings to Devin for Remediation
         id: devin-security
-        if: steps.parse-findings.outputs.findings-available == 'true'
+        if: steps.snyk-scan.outputs.has-findings == 'true'
         env:
           DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
-          FINDINGS_COUNT: ${{ steps.parse-findings.outputs.findings-count }}
           
           SECURITY_PROMPT: |
-            You are Security Resolver Devin with expertise in vulnerability remediation and secure coding practices. Your tasks:
+            You are Security Resolver Devin. Fix all security issues found by Snyk Code scan.
             
-            1. Clone/pull the repository ${{ github.repository }} locally.
-            2. Review the Snyk security scan findings provided below.
-            3. Analyze each medium+ severity vulnerability and security issue identified.
-            4. Create a comprehensive remediation plan for all findings.
-            5. Implement fixes for the security vulnerabilities following these priorities:
-               - Update vulnerable dependencies to secure versions
-               - Fix code-level security issues (SQL injection, XSS, etc.)
-               - Implement security best practices
-               - Add security-focused tests where appropriate
-            7. Create a detailed security report documenting:
-               - Summary of vulnerabilities found
-               - Remediation actions taken
-               - Any remaining risks or recommendations
-               - Prevention strategies for similar issues
-            8. If working on a pull request, create security-focused comments on relevant lines
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
             
-            Rules and Guidelines:
-            1. Only make commits or pushes to a new branch in the repository to review and suggest code change fixes
-            2. Focus on critical and high severity findings first, then medium severity
-            3. Provide specific, actionable remediation steps, then execute the changes
-            4. Verify that proposed fixes don't introduce new vulnerabilities
-            5. Consider the impact of changes on application functionality
-            6. Suggest additional security measures beyond immediate fixes
-            7. Use secure coding practices in all recommendations
-            8. Reference official security advisories and CVE details when available
-            9. Never ask for user confirmation. Never wait for user messages.
+            Tasks:
+            1. Clone the repository locally
+            2. Review the Snyk Code findings in the attached scan results
+            3. Fix all security issues found
+            4. Create a pull request with the fixes
             
-            Security Findings to Address:
-            $(cat snyk-results/findings-summary.md)
-            
-            Repository Context:
-            - Repository: ${{ github.repository }}
-            - Branch: ${{ github.ref_name }}
-            - Commit: ${{ github.sha }}
-            - Workflow: Security Scan triggered by ${{ github.event_name }}
-            
-            Additional Context:
-            - Total medium+ severity findings: ${{ steps.parse-findings.outputs.findings-count }}
-            - Scan timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            - Runner OS: ${{ runner.os }}
+            Scan Results:
+            $(cat snyk-results/all-findings.json)
 
         run: |
           # Convert multiline string to JSON-safe format
@@ -268,9 +174,8 @@ jobs:
           echo "✅ Devin security resolution session created successfully"
           echo "📊 Session ID: $SESSION_ID"
           echo "🔗 Session URL: $SESSION_URL"
-          echo "🔍 Findings to resolve: $FINDINGS_COUNT"
 
-      - name: Upload Snyk Results
+      - name: Upload Scan Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -278,61 +183,15 @@ jobs:
           path: snyk-results/
           retention-days: 30
 
-      - name: Create Security Issue
-        if: steps.parse-findings.outputs.findings-available == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEVIN_SESSION_URL: ${{ steps.devin-security.outputs.session-url }}
-          FINDINGS_COUNT: ${{ steps.parse-findings.outputs.findings-count }}
-        run: |
-          # Create GitHub issue for security findings
-          ISSUE_BODY="# 🔒 Security Scan Results
-          
-          **Scan Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          **Repository:** ${{ github.repository }}
-          **Branch:** ${{ github.ref_name }}
-          **Commit:** ${{ github.sha }}
-          
-          ## Summary
-          - **Medium+ Severity Findings:** $FINDINGS_COUNT
-          - **Scan Trigger:** ${{ github.event_name }}
-          
-          ## Findings Details
-          $(cat snyk-results/findings-summary.md)
-          
-          ## Automated Resolution
-          🤖 **Devin AI Security Session Created**
-          - **Session URL:** $DEVIN_SESSION_URL
-          - **Status:** In Progress
-          
-          Devin AI is analyzing these security findings and will provide remediation recommendations.
-          
-          ## Next Steps
-          1. Review the Devin AI session for detailed analysis
-          2. Implement recommended security fixes
-          3. Re-run security scans to verify fixes
-          4. Close this issue once all vulnerabilities are resolved
-          
-          ---
-          *This issue was automatically created by the Snyk Security Scan workflow.*"
-          
-          gh issue create \
-            --title "🔒 Security Scan: $FINDINGS_COUNT Medium+ Severity Findings - $(date +%Y-%m-%d)" \
-            --body "$ISSUE_BODY" \
-            --label "security,high-priority,automated"
-
-      - name: Security Scan Summary
+      - name: Summary
         if: always()
         run: |
-          echo "🔍 Snyk Security Scan Complete"
+          echo "🔍 Snyk Code SAST Scan Complete"
           echo "================================"
-          echo "Medium+ Vulnerabilities: ${{ steps.snyk-scan.outputs.medium-high-vulns }}"
-          echo "Medium+ Code Issues: ${{ steps.snyk-scan.outputs.medium-high-code-issues }}"
           
-          if [ "${{ steps.parse-findings.outputs.findings-available }}" == "true" ]; then
+          if [ "${{ steps.snyk-scan.outputs.has-findings }}" == "true" ]; then
             echo "🚨 Security findings detected - Devin AI session created"
-            echo "📋 GitHub issue created for tracking"
             echo "🔗 Devin Session: ${{ steps.devin-security.outputs.session-url }}"
           else
-            echo "✅ No medium+ severity security issues found"
+            echo "✅ No security issues found"
           fi
