@@ -79,6 +79,30 @@ The frontend will run on http://localhost:3000
 - In-memory storage (no persistent database)
 - Basic test setup
 
+## Security
+
+This application has been audited for security vulnerabilities. See [SECURITY_REPORT.md](../SECURITY_REPORT.md) for details.
+
+### Environment Variables
+
+The frontend uses environment variables for configuration. Copy `.env.example` to `.env`:
+
+```bash
+cd frontend
+cp .env.example .env
+```
+
+Edit `.env` to configure the backend API URL if needed.
+
+### Production Deployment
+
+⚠️ **Important:** This is a demo application. For production deployment:
+- Enable HTTPS/SSL
+- Implement rate limiting
+- Add authentication
+- Use a proper database instead of in-memory storage
+- Review the full security recommendations in SECURITY_REPORT.md
+
 ## Development Status
 
 This is a partially complete application with:
