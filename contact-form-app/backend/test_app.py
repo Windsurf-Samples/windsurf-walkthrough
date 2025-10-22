@@ -15,6 +15,9 @@ def test_submit_contact(client):
     })
     assert response.status_code == 201
     assert response.json['status'] == 'success'
-    assert response.json['email'] == 'john@example.com'
+    
+    get_response = client.get('/api/contacts')
+    assert len(get_response.json) == 1
+    assert get_response.json[0]['email'] == 'john@example.com'
 
 # TODO: Add more test cases for validation, error handling
