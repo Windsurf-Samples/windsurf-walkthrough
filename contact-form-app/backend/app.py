@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -25,11 +26,12 @@ def submit_contact():
     
 
     contacts.append(contact)
-    return jsonify({'status': 'success'}), 201
+    return jsonify({'status': 'success', 'name': contact['name'], 'email': contact['email'], 'message': contact['message']}), 201
 
 @app.route('/api/contacts', methods=['GET'])
 def get_contacts():
     return jsonify(contacts)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ('true', '1', 'yes')
+    app.run(debug=debug_mode, port=5000)
