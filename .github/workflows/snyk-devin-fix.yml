@@ -31,7 +31,7 @@ jobs:
           LATEST_AUTHOR=$(git log -1 --format='%an' "$PR_HEAD_SHA")
           echo "Latest commit author on PR branch: ${LATEST_AUTHOR}"
 
-          if [ "$LATEST_AUTHOR" = "devin-ai-integration[bot]" ]; then
+          if [ "$LATEST_AUTHOR" = "Devin AI" ] || [ "$LATEST_AUTHOR" = "devin-ai-integration[bot]" ]; then
             echo "is_devin=true" >> "$GITHUB_OUTPUT"
             echo "Skipping Devin session — latest commit is already from Devin."
           else
