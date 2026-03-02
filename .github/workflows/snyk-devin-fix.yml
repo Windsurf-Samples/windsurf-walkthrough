@@ -22,6 +22,22 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check if latest commit is from Devin
+        id: devin-check
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # Check the author of the most recent commit on the PR branch (not the merge commit)
+          LATEST_AUTHOR=$(git log -1 --format='%an' "$PR_HEAD_SHA")
+          echo "Latest commit author on PR branch: ${LATEST_AUTHOR}"
+
+          if [ "$LATEST_AUTHOR" = "devin-ai-integration[bot]" ]; then
+            echo "is_devin=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping Devin session — latest commit is already from Devin."
+          else
+            echo "is_devin=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -102,7 +118,7 @@ jobs:
           fi
 
       - name: Trigger Devin to fix vulnerabilities
-        if: steps.snyk-scan.outputs.has_findings == 'true'
+        if: steps.snyk-scan.outputs.has_findings == 'true' && steps.devin-check.outputs.is_devin != 'true'
         env:
           DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
           DEVIN_ORG_ID: ${{ vars.DEVIN_ORG_ID }}
@@ -210,7 +226,11 @@ jobs:
             if [ "${{ steps.snyk-scan.outputs.has_findings }}" = "true" ]; then
               echo "Found **${{ steps.snyk-scan.outputs.total_count }}** security finding(s) (Critical/High: **${{ steps.snyk-scan.outputs.critical_count }}**)."
               echo ""
-              echo "A Devin session has been triggered to fix them automatically."
+              if [ "${{ steps.devin-check.outputs.is_devin }}" = "true" ]; then
+                echo "> **Note:** Devin was the most recent commit author — no new session was created to avoid duplicate remediation."
+              else
+                echo "A Devin session has been triggered to fix them automatically."
+              fi
             else
               echo "No security findings detected. All clear!"
             fi
