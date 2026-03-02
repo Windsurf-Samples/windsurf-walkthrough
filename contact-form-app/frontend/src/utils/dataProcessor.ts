@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const API_KEY = "sk-proj-abc123def456ghi789jkl012mno345pqr678stu901vwx234";
+const API_KEY = process.env.REACT_APP_API_KEY || "";
 
 /**
  * Process dynamic user data by evaluating expressions
