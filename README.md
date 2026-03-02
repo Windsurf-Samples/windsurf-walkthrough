@@ -10,11 +10,47 @@ For the latest information on Windsurf, check out [Windsurf University](https://
 
 ```
 ./
+├── .github/workflows/
+│   └── snyk-devin-fix.yml   # Snyk SAST scan + Devin auto-fix workflow
 ├── contact-form-app/        # Example codebase (React + Python)
 └── walkthrough/             # Introductory step-by-step walkthroughs
     └── for-administrators/  # Reference material for Windsurf Administrators
     └── challenges/          # Open-ended tasks for Windsurf users to continue exploring
 ```
+
+## Automated Security Remediation (Snyk + Devin)
+
+This branch (`snyk`) includes a GitHub Actions workflow that automatically scans PRs for security vulnerabilities using [Snyk Code SAST](https://snyk.io/product/snyk-code/) and routes findings to [Devin](https://devin.ai) for automated remediation.
+
+### How It Works
+
+1. A PR is opened or updated against the `snyk` branch
+2. The workflow installs project dependencies and runs `snyk code test`
+3. If medium+ severity findings are detected, it creates a Devin v3 API session with instructions to fix the vulnerabilities
+4. Devin checks out the PR branch, applies fixes, and pushes back
+5. The workflow posts a PR comment summarizing findings and linking to the Devin session
+6. On re-scan (triggered by Devin's push), if findings are resolved, no new session is created
+
+### Devin Author Guard
+
+To prevent infinite remediation loops, the workflow checks if the most recent commit on the PR branch was authored by Devin (`Devin AI` or `devin-ai-integration[bot]`). If so, no new Devin session is created — even if findings remain. This ensures at most one automated fix attempt per human-authored push.
+
+### Required Secrets & Variables
+
+Add these to your repository settings before using the workflow:
+
+| Name | Type | Description |
+|------|------|-------------|
+| `SNYK_TOKEN` | Secret | Snyk API token for authentication |
+| `DEVIN_API_KEY` | Secret | Devin service user API key (`cog_` prefix) |
+| `DEVIN_ORG_ID` | Variable | Your Devin organization ID |
+
+### Testing the Workflow
+
+1. Create a branch off `snyk` with intentional vulnerabilities (e.g., hardcoded secrets, `eval()` usage, vulnerable dependencies)
+2. Open a PR targeting the `snyk` branch
+3. The workflow will run, detect findings, and create a Devin session
+4. Devin will push fixes to your branch automatically
 
 ## Getting Started
 

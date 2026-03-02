@@ -1,0 +1,237 @@
+name: Snyk Security Scan with Devin Auto-Fix
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - snyk
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  snyk-vulnerability-fix:
+    name: Scan & Fix Vulnerabilities
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if latest commit is from Devin
+        id: devin-check
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # Check the author of the most recent commit on the PR branch (not the merge commit)
+          LATEST_AUTHOR=$(git log -1 --format='%an' "$PR_HEAD_SHA")
+          echo "Latest commit author on PR branch: ${LATEST_AUTHOR}"
+
+          if [ "$LATEST_AUTHOR" = "Devin AI" ] || [ "$LATEST_AUTHOR" = "devin-ai-integration[bot]" ]; then
+            echo "is_devin=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping Devin session — latest commit is already from Devin."
+          else
+            echo "is_devin=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies for all projects..."
+
+          # Install frontend dependencies
+          if [ -f contact-form-app/frontend/package.json ]; then
+            echo "Installing frontend dependencies..."
+            cd contact-form-app/frontend
+            npm ci
+            cd ../..
+          fi
+
+          # Install backend dependencies
+          if [ -f contact-form-app/backend/requirements.txt ]; then
+            echo "Installing backend Python dependencies..."
+            pip install -r contact-form-app/backend/requirements.txt
+          fi
+
+      - name: Install Snyk CLI
+        run: |
+          npm install -g snyk
+          snyk --version
+
+      - name: Run Snyk Security Scan
+        id: snyk-scan
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          mkdir -p snyk-results
+
+          echo "Running Snyk Code SAST scan..."
+          snyk code test --json --severity-threshold=medium > snyk-results/findings.json 2>&1 || true
+
+          # Count critical/high findings (error = high/critical, warning = medium)
+          CRITICAL_COUNT=$(cat snyk-results/findings.json | jq '[.runs[]?.results[]? | select(.level == "error")] | length' 2>/dev/null || echo "0")
+          WARNING_COUNT=$(cat snyk-results/findings.json | jq '[.runs[]?.results[]? | select(.level == "warning")] | length' 2>/dev/null || echo "0")
+          TOTAL_FINDINGS=$((CRITICAL_COUNT + WARNING_COUNT))
+
+          echo "Critical/High findings: ${CRITICAL_COUNT}"
+          echo "Medium findings: ${WARNING_COUNT}"
+          echo "Total findings: ${TOTAL_FINDINGS}"
+
+          echo "critical_count=${CRITICAL_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "total_count=${TOTAL_FINDINGS}" >> "$GITHUB_OUTPUT"
+
+          if [ "$TOTAL_FINDINGS" -gt 0 ]; then
+            # Extract finding details for the prompt
+            cat snyk-results/findings.json | jq -r \
+              '[.runs[]?.results[]? | select(.level == "warning" or .level == "error") | {
+                ruleId: .ruleId,
+                level: .level,
+                message: .message.text,
+                file: .locations[0].physicalLocation.artifactLocation.uri,
+                line: .locations[0].physicalLocation.region.startLine
+              }]' > /tmp/vuln_details.json 2>/dev/null || echo "[]" > /tmp/vuln_details.json
+
+            # Also create a human-readable summary
+            cat snyk-results/findings.json | jq -r \
+              '.runs[]?.results[]? | select(.level == "warning" or .level == "error") | "- [\(.level | ascii_upcase)] \(.message.text) | File: \(.locations[0].physicalLocation.artifactLocation.uri) | Line: \(.locations[0].physicalLocation.region.startLine) | Rule: \(.ruleId)"' \
+              > /tmp/vuln_summary.txt 2>/dev/null || echo "No details available" > /tmp/vuln_summary.txt
+
+            echo "has_findings=true" >> "$GITHUB_OUTPUT"
+            echo "Found ${TOTAL_FINDINGS} security findings:"
+            cat /tmp/vuln_summary.txt
+          else
+            echo "has_findings=false" >> "$GITHUB_OUTPUT"
+            echo "No security findings detected."
+          fi
+
+      - name: Trigger Devin to fix vulnerabilities
+        if: steps.snyk-scan.outputs.has_findings == 'true' && steps.devin-check.outputs.is_devin != 'true'
+        env:
+          DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
+          DEVIN_ORG_ID: ${{ vars.DEVIN_ORG_ID }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          REPO: ${{ github.repository }}
+          FINDING_COUNT: ${{ steps.snyk-scan.outputs.total_count }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VULN_DETAILS=$(cat /tmp/vuln_summary.txt)
+          VULN_JSON=$(cat /tmp/vuln_details.json)
+
+          cat > /tmp/prompt.txt << PROMPT_EOF
+          You are a security engineer. Snyk Code SAST has identified ${FINDING_COUNT} security finding(s) on PR #${PR_NUMBER} in repository ${REPO} on branch '${PR_BRANCH}'.
+
+          Findings:
+          ${VULN_DETAILS}
+
+          Detailed findings (JSON):
+          ${VULN_JSON}
+
+          Instructions:
+          1. Clone ${REPO} and checkout branch '${PR_BRANCH}'.
+          2. For each finding above, locate the affected file and line.
+          3. Fix the root cause of each critical/high severity vulnerability.
+          4. Ensure fixes maintain existing functionality and follow the project's coding style.
+          5. Commit with a message referencing the Snyk rule IDs (e.g., "fix: resolve security vulnerability [rule-id] in file.js").
+          6. Push to branch '${PR_BRANCH}'.
+
+          Constraints:
+          - Only fix security vulnerabilities; do not refactor unrelated code.
+          - Do not modify tests unless directly needed for a fix.
+          - If a fix would cause breaking changes, comment on PR #${PR_NUMBER} explaining the issue instead.
+          - Work autonomously without waiting for confirmation.
+          PROMPT_EOF
+
+          ESCAPED_PROMPT=$(jq -Rs . < /tmp/prompt.txt)
+
+          jq -n \
+            --argjson prompt "$ESCAPED_PROMPT" \
+            --arg title "Fix Snyk security findings on PR #${PR_NUMBER}" \
+            --arg repo "$REPO" \
+            '{
+              prompt: $prompt,
+              title: $title,
+              repos: [$repo],
+              tags: ["snyk-fix", "automated"]
+            }' > /tmp/request.json
+
+          HTTP_RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST \
+            -H "Authorization: Bearer ${DEVIN_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/request.json \
+            "https://api.devin.ai/v3/organizations/${DEVIN_ORG_ID}/sessions")
+
+          HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '/^HTTP_STATUS:/d')
+          HTTP_CODE=$(echo "$HTTP_RESPONSE" | grep '^HTTP_STATUS:' | cut -d: -f2)
+
+          if [ "$HTTP_CODE" -eq 200 ]; then
+            SESSION_URL=$(echo "$HTTP_BODY" | jq -r '.url')
+            SESSION_ID=$(echo "$HTTP_BODY" | jq -r '.session_id')
+            echo "Devin session created: ${SESSION_URL}"
+
+            COMMENT_BODY=$(cat << EOF
+          **Snyk Security Scan - Automated Fix Triggered**
+
+          Found **${FINDING_COUNT}** security finding(s). A Devin session has been created to fix them automatically.
+
+          **Devin Session:** ${SESSION_URL}
+
+          **Findings:**
+          ${VULN_DETAILS}
+          EOF
+            )
+
+            jq -n --arg body "$COMMENT_BODY" '{body: $body}' | \
+              curl -s -X POST \
+                -H "Authorization: token ${GITHUB_TOKEN}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "https://api.github.com/repos/${REPO}/issues/${PR_NUMBER}/comments" \
+                -d @-
+
+            echo "session-id=${SESSION_ID}" >> "$GITHUB_OUTPUT"
+            echo "session-url=${SESSION_URL}" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Failed to create Devin session (HTTP ${HTTP_CODE})"
+            echo "$HTTP_BODY"
+            exit 1
+          fi
+
+      - name: Upload Scan Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: snyk-scan-results-${{ github.run_number }}
+          path: snyk-results/
+          retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Snyk Security Scan Results"
+            echo ""
+            if [ "${{ steps.snyk-scan.outputs.has_findings }}" = "true" ]; then
+              echo "Found **${{ steps.snyk-scan.outputs.total_count }}** security finding(s) (Critical/High: **${{ steps.snyk-scan.outputs.critical_count }}**)."
+              echo ""
+              if [ "${{ steps.devin-check.outputs.is_devin }}" = "true" ]; then
+                echo "> **Note:** Devin was the most recent commit author — no new session was created to avoid duplicate remediation."
+              else
+                echo "A Devin session has been triggered to fix them automatically."
+              fi
+            else
+              echo "No security findings detected. All clear!"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
